@@ -1,32 +1,57 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <el-menu :default-active="$route.path"
+             router
+             mode="horizontal"
+             active-text-color="#42b983">
+      <el-menu-item v-for="link in links" :key="link.id" :index="link.to">
+        {{ link.name }}
+      </el-menu-item>
+    </el-menu>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
+<script>
+export default {
+  name: 'App',
+  data() {
+    return {
+      links: [
+        {id: 0, name: 'Home', to: '/'},
+        {id: 1, name: 'Gallery', to: '/gallery'},
+        {id: 2, name: 'Cinema', to: '/cinema'}
+      ]
+    }
+  }
+}
+</script>
 
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
+.el-menu {
+  display: flex;
   font-weight: bold;
-  color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.el-menu-item {
+  flex: 1;
+  text-align: center;
+}
+
+.fade-enter, .fade-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .3s ease;
 }
 </style>
